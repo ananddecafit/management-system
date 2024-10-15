@@ -1,0 +1,22 @@
+# Fetching the minified node image on apline linux
+FROM node:22.9.0-alpine
+
+# Declaring env
+ENV PORT=8080
+
+# Setting up the work directory
+WORKDIR /fe
+
+# Copying all the files in our project
+COPY . /
+
+# Exposing server port
+EXPOSE 8080
+
+# Installing dependencies
+RUN npm install
+
+RUN npm run build
+
+# Starting our application
+CMD [ "npm", "run", "start" ]

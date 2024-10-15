@@ -1,4 +1,1 @@
-Install brew
-
-brew install pipx
-
+npm start

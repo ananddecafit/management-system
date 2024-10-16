@@ -38,6 +38,7 @@ services:
       - db
     environment:
       PORT: 8001
+      DB_PORT: 5432
 
   fe:
     image: asanand1996/fe

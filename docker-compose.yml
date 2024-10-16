@@ -39,7 +39,7 @@ services:
     container_name: fe
     restart: always
     ports:
-      - "8080:8080"
+      - "8000:8000"
     networks:
       - webappnetwork
 
@@ -48,7 +48,7 @@ services:
     container_name: be
     restart: always
     ports:
-      - "8000:8000"
+      - "8000:8001"
     depends_on:
       - db
     networks:

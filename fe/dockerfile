@@ -2,7 +2,7 @@
 FROM node:22.9.0-alpine
 
 # Declaring env
-ENV PORT=8080
+ENV PORT=8000
 
 # Setting up the work directory
 WORKDIR /fe
@@ -11,7 +11,7 @@ WORKDIR /fe
 COPY . /
 
 # Exposing server port
-EXPOSE 8080
+EXPOSE 8000
 
 # Installing dependencies
 RUN npm install

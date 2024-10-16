@@ -1,17 +1,11 @@
 # Fetching the minified node image on apline linux
 FROM node:22.9.0-slim
 
-# Declaring env
-ENV API_PORT=8001
-
 # Setting up the work directory
 WORKDIR /be
 
 # Copying all the files in our project
 COPY . .
-
-# Exposing server port
-EXPOSE 8001
 
 # Installing dependencies
 RUN npm install

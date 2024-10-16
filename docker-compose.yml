@@ -1,9 +1,5 @@
 version: '3.9'
 
-networks:
-  webappnetwork:
-    driver: bridge
-
 services:
   db:
     image: postgres:17.0-alpine
@@ -16,23 +12,32 @@ services:
     # set shared memory limit when using docker-compose
     shm_size: 128mb
     environment:
-      POSTGRES_DB: df_mgmt_sys
       POSTGRES_USER: user
       POSTGRES_PASSWORD: postgres
-    networks:
-      - webappnetwork
 
-  # pgadmin:
-  #   image: dpage/pgadmin4:2024-10-15-1
-  #   restart: always
-  #   ports:
-  #     - "8888:80"
-  #   volumes:
-  #     - ./be/.pgadmin-data:/var/lib/pgadmin
-  #   depends_on:
-  #     - db
-  #   networks:
-  #     - webappnetwork
+  pgadmin:
+    image: dpage/pgadmin4:2024-10-15-1
+    restart: always
+    ports:
+      - "8002:80"
+    volumes:
+      - ./be/.pgadmin-data:/var/lib/pgadmin
+    depends_on:
+      - db
+    environment:
+      PGADMIN_DEFAULT_EMAIL: user@domain.com
+      PGADMIN_DEFAULT_PASSWORD: postgres
+
+  be:
+    image: asanand1996/be
+    container_name: be
+    restart: always
+    ports:
+      - "8001:8001"
+    depends_on:
+      - db
+    environment:
+      PORT: 8001
 
   fe:
     image: asanand1996/fe
@@ -40,16 +45,5 @@ services:
     restart: always
     ports:
       - "8000:8000"
-    networks:
-      - webappnetwork
-
-  be:
-    image: asanand1996/be
-    container_name: be
-    restart: always
-    ports:
-      - "8000:8001"
-    depends_on:
-      - db
-    networks:
-      - webappnetwork
+    environment:
+      PORT: 8000

@@ -1,13 +1,19 @@
 {
     "compilerOptions": {
-      "target": "es6",
-      "module": "commonjs",
+      "lib": ["esnext"],
+      "allowJs": true,
+      "noEmit": true,
+      "moduleResolution": "bundler",
+      "resolveJsonModule": true,
+      "isolatedModules": true,
+      "incremental": true,
+      "module": "esnext",
       "outDir": "./dist",
       "strict": true,
       "esModuleInterop": true,
       "skipLibCheck": true,
       "forceConsistentCasingInFileNames": true
     },
-    "include": ["src/**/*.ts"],
+    "include": ["./**/*.ts"],
     "exclude": ["node_modules"]
 }

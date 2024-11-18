@@ -2,18 +2,18 @@
     "compilerOptions": {
       "lib": ["esnext"],
       "allowJs": true,
-      "noEmit": true,
-      "moduleResolution": "bundler",
+      // "moduleResolution": "bundler",
       "resolveJsonModule": true,
       "isolatedModules": true,
       "incremental": true,
-      "module": "esnext",
+      "module": "CommonJS",
       "outDir": "./dist",
       "strict": true,
       "esModuleInterop": true,
       "skipLibCheck": true,
       "forceConsistentCasingInFileNames": true,
+      "target": "es5",
     },
-    "include": ["./**/*.ts"],
+    "include": ["./src/**/*"],
     "exclude": ["node_modules"]
 }

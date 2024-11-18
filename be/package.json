@@ -1,10 +1,26 @@
 {
   "name": "be",
-  "version": "0.0.0",
-  "private": true,
+  "version": "1.0.0",
+  "main": "index.js",
   "scripts": {
-    "dev": "dotenv -e .env.development node ./bin/www",
-    "start": "node ./bin/www"
+    "dev": "dotenv -e .env.development npx tsx ./src/bin/www.ts",
+    "start": "npx ts-node --esm ./src/bin/www.ts",
+    "build": "tsc",
+    "serve": "node dist/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@types/cookie-parser": "^1.4.7",
+    "@types/debug": "^4.1.12",
+    "@types/express": "^5.0.0",
+    "@types/morgan": "^1.9.9",
+    "@types/node": "^22.7.6",
+    "express": "^4.21.1",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",

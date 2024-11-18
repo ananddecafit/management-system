@@ -4,16 +4,19 @@
  * Module dependencies.
  */
 
-var app = require('../app');
-var debug = require('debug')('be:server');
-var http = require('http');
+import app from "../app";
+import Debug from "debug";
+import http from "http";
+import { normalizePort } from "../../knexfile";
+
+const debug = Debug("be:server");
 
 /**
  * Get port from environment and store in Express.
  */
 
 var port = normalizePort(process.env.PORT);
-app.set('port', port);
+app.set('port', port || 8000);
 
 /**
  * Create HTTP server.
@@ -30,30 +33,10 @@ server.on('error', onError);
 server.on('listening', onListening);
 
 /**
- * Normalize a port into a number, string, or false.
- */
-
-function normalizePort(val) {
-  var port = parseInt(val, 10);
-
-  if (isNaN(port)) {
-    // named pipe
-    return val;
-  }
-
-  if (port >= 0) {
-    // port number
-    return port;
-  }
-
-  return false;
-}
-
-/**
  * Event listener for HTTP server "error" event.
  */
 
-function onError(error) {
+function onError(error: any) {
   if (error.syscall !== 'listen') {
     throw error;
   }
@@ -85,6 +68,6 @@ function onListening() {
   var addr = server.address();
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
-    : 'port ' + addr.port;
+    : 'port ' + addr?.port;
   debug('Listening on ' + bind);
 }

@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import logger from "morgan";
 import indexRouter from "./routes/index";
 import testRouter from "./routes/test";
+import cors from "cors";
 
 interface Error {
   message: string; 
@@ -12,6 +13,7 @@ interface Error {
 }
 
 var app = express();
+app.use(cors());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

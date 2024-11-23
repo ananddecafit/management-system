@@ -39,4 +39,4 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 # docker builds
 docker build -t asanand1996/fe . 
 
-docker run --name fe -d -p 8080:8080 asanand1996/fe
+docker run --name fe -d -p 8000:8000 asanand1996/fe

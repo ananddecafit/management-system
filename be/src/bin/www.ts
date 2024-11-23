@@ -71,3 +71,18 @@ function onListening() {
     : 'port ' + addr?.port;
   debug('Listening on ' + bind);
 }
+
+
+/*
+serve client build
+
+app.use(express.static(path.join(__dirname, 'build')));
+
+// * to allow react sub-paths
+app.get('/*', function (req, res) {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
+
+app.listen(9000);
+
+*/

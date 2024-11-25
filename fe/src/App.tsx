@@ -1,8 +1,16 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { getTestData } from './api/test';
 
 function App() {
+
+  const [data, setData] = useState<{title: string}[]>();
+
+  useEffect(() => {
+    getTestData().then((res) => setData(res.data));
+  }, []);
+
   return (
     <div className="App">
       <header className="App-header">
@@ -18,6 +26,7 @@ function App() {
         >
           Learn React PORT= {process.env.REACT_APP_PORT}, API_PORT={process.env.REACT_APP_API_PORT}
         </a>
+        Data = {data && data[0] && data[0].title}
       </header>
     </div>
   );

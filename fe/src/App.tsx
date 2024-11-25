@@ -16,7 +16,7 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React PORT= {process.env.PORT}
+          Learn React PORT= {process.env.REACT_APP_PORT}
         </a>
       </header>
     </div>

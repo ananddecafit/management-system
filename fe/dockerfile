@@ -2,7 +2,7 @@
 FROM node:22.9.0-alpine
 
 # Setting up the work directory
-WORKDIR /fe
+WORKDIR /fe-new
 
 # Copying all the files in our project
 COPY . /

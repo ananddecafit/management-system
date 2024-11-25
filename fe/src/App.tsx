@@ -24,7 +24,7 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React PORT= {process.env.REACT_APP_PORT}, API_PORT={process.env.REACT_APP_API_PORT}
+          Learn React PORT= {process.env.REACT_APP_PORT}, API_PATH={process.env.REACT_APP_API_PATH}
         </a>
         Data = {data && data[0] && data[0].title}
       </header>

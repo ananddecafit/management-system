@@ -10,4 +10,4 @@ RUN npm install
 RUN npm run build
 
 # Starting our application
-CMD [ "npm", "run", "serve" ]
+CMD [ "npm", "run", "docker-start" ]

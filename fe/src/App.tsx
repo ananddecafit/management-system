@@ -8,7 +8,7 @@ function App() {
   const [data, setData] = useState<{title: string}[]>();
 
   useEffect(() => {
-    getTestData().then((res) => setData(res.data));
+    getTestData().then((res) => setData(res.data)).catch((err) => console.log(err));
   }, []);
 
   return (

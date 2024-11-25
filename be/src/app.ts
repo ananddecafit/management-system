@@ -14,6 +14,7 @@ interface Error {
 
 var app = express();
 app.use(cors());
+// fix cors error in docker
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

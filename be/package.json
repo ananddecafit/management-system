@@ -6,7 +6,9 @@
     "dev": "dotenv -e .env.development npx tsx ./src/bin/www.ts",
     "build": "tsc",
     "start": "node --env-file=.env dist/src/bin/www.js",
-    "docker-start": "node dist/src/bin/www.js"
+    "docker-start": "node dist/src/bin/www.js",
+    "docker-build": "docker build -t local/be . ",
+    "docker-prod-build": "docker build -t prod/be --platform linux/x86_64 ."
   },
   "author": "",
   "license": "ISC",

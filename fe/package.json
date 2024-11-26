@@ -22,6 +22,8 @@
     "dev": "react-scripts start --env-file .env.development",
     "start": "node --env-file=.env server.js",
     "docker-start": "node server.js",
+    "docker-build": "docker build -t local/fe . ",
+    "docker-prod-build": "docker build -t prod/fe --platform linux/x86_64 .",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

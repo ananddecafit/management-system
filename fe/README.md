@@ -47,4 +47,7 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 
 
 # docker build
-docker build -t asanand1996/fe . 
+docker build -t asanand1996/fe .
+
+# docker build prod
+docker build -t asanand1996/fe --platform linux/x86_64 .

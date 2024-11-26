@@ -18,6 +18,11 @@ services:
 
   be:
     image: prod/be
+    build:
+      context: ./be
+      dockerfile: dockerfile
+      platforms:
+        - "linux/amd64"
     depends_on:
       - db
     container_name: be
@@ -33,15 +38,19 @@ services:
 
   fe:
     image: prod/fe
+    build:
+      context: ./fe
+      dockerfile: dockerfile
+      platforms:
+        - "linux/amd64"
+      args:
+        REACT_APP_PORT: ${CLIENT_PORT}
+        REACT_APP_API_PATH: ${API_PATH}
     depends_on:
       - be
     container_name: fe
     ports:
       - ${CLIENT_PORT}:8000
-    build:
-      args:
-        REACT_APP_PORT: ${CLIENT_PORT}
-        REACT_APP_API_PATH: ${API_PATH}
     environment:
       PORT: ${CLIENT_PORT}
       API_PORT: ${API_PORT}

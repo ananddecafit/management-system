@@ -32,10 +32,14 @@ services:
 
   be:
     image: local/be
+    build:
+      context: ./be
+      dockerfile: dockerfile
+      args:
+        platform: linux/x86_64
     depends_on:
       - db
     container_name: be
-    restart: always
     ports:
       - ${API_PORT}:8001
     environment:
@@ -48,10 +52,17 @@ services:
 
   fe:
     image: local/fe
+
+    build:
+      context: ./fe
+      dockerfile: dockerfile
+      args:
+        platform: linux/x86_64
+        REACT_APP_PORT: ${CLIENT_PORT}
+        REACT_APP_API_PATH: ${API_PATH}
     depends_on:
       - be
     container_name: fe
-    restart: always
     ports:
       - ${CLIENT_PORT}:8000
     environment:

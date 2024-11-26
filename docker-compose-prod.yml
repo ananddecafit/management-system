@@ -21,7 +21,6 @@ services:
     depends_on:
       - db
     container_name: be
-    restart: always
     ports:
       - ${API_PORT}:8001
     environment:
@@ -37,9 +36,12 @@ services:
     depends_on:
       - be
     container_name: fe
-    restart: always
     ports:
       - ${CLIENT_PORT}:8000
+    build:
+      args:
+        REACT_APP_PORT: ${CLIENT_PORT}
+        REACT_APP_API_PATH: ${API_PATH}
     environment:
       PORT: ${CLIENT_PORT}
       API_PORT: ${API_PORT}

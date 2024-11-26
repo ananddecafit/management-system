@@ -1,5 +1,4 @@
 **/node_modules
-**/.postgres-data
-**/.pgadmin-data
-.env
-.env.development
+**/.env
+**/.env.development
+**/dist

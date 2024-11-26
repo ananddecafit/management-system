@@ -10,7 +10,13 @@ COPY . /
 # Installing dependencies
 RUN npm install
 
-# RUN npm run build
+ARG REACT_APP_PORT
+ENV REACT_APP_PORT $REACT_APP_PORT
+
+ARG REACT_APP_API_PATH
+ENV REACT_APP_API_PATH $REACT_APP_API_PATH
+
+RUN npm run build
 
 # Starting our application
 CMD [ "npm", "run", "docker-start" ]

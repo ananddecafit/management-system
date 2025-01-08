@@ -1,0 +1,4 @@
+*.tar.gz
+DeploymentNotes.md
+.postgres-data
+.pgadmin-data

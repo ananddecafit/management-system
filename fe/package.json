@@ -20,7 +20,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "dev": "react-scripts start --env-file .env.development",
+    "dev": "react-scripts start --env-file .env",
     "start": "node --env-file=.env server.js",
     "docker-start": "node server.js",
     "docker-build": "docker build -t local/fe . ",

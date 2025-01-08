@@ -1,52 +1,52 @@
 version: '3.9'
 
 services:
-  db:
-    image: postgres:17.0-alpine
-    container_name: db
-    restart: always
-    ports:
-      - ${DB_PORT}:5432
-    volumes:
-      - ${POSTGRES_VOLUME}:/var/lib/postgresql/data
-    # set shared memory limit when using docker-compose
-    shm_size: 128mb
-    environment:
-      POSTGRES_DB: ${DB_NAME}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-
-  # first time only
-  # pgadmin:
-  #   image: dpage/pgadmin4:2024-10-15-1
-  #   depends_on:
-  #     - db
+  # db:
+  #   image: postgres:17.0-alpine
+  #   container_name: db
   #   restart: always
   #   ports:
-  #     - ${PG_ADMIN_PORT}:80
+  #     - ${DB_PORT}:5432
   #   volumes:
-  #     - ${PGADMIN_VOLUME}:/var/lib/pgadmin
+  #     - ${POSTGRES_VOLUME}:/var/lib/postgresql/data
+  #   # set shared memory limit when using docker-compose
+  #   shm_size: 128mb
   #   environment:
-  #     PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
-  #     PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+  #     POSTGRES_DB: ${DB_NAME}
+  #     POSTGRES_USER: ${POSTGRES_USER}
+  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
 
-  be:
-    image: local/be
-    build:
-      context: ./be
-      dockerfile: dockerfile
-    depends_on:
-      - db
-    container_name: be
-    ports:
-      - ${API_PORT}:8001
-    environment:
-      PORT: ${API_PORT}
-      DB_NAME: ${DB_NAME}
-      DB_PORT: ${DB_PORT}
-      DB_HOSTNAME: ${DB_HOSTNAME}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+  # # first time only
+  # # pgadmin:
+  # #   image: dpage/pgadmin4:2024-10-15-1
+  # #   depends_on:
+  # #     - db
+  # #   restart: always
+  # #   ports:
+  # #     - ${PG_ADMIN_PORT}:80
+  # #   volumes:
+  # #     - ${PGADMIN_VOLUME}:/var/lib/pgadmin
+  # #   environment:
+  # #     PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+  # #     PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+
+  # be:
+  #   image: local/be
+  #   build:
+  #     context: ./be
+  #     dockerfile: dockerfile
+  #   depends_on:
+  #     - db
+  #   container_name: be
+  #   ports:
+  #     - ${API_PORT}:8001
+  #   environment:
+  #     PORT: ${API_PORT}
+  #     DB_NAME: ${DB_NAME}
+  #     DB_PORT: ${DB_PORT}
+  #     DB_HOSTNAME: ${DB_HOSTNAME}
+  #     POSTGRES_USER: ${POSTGRES_USER}
+  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
 
   fe:
     image: local/fe
@@ -54,14 +54,17 @@ services:
       context: ./fe
       dockerfile: dockerfile
       args:
+        # env variables required on client 
         REACT_APP_PORT: ${CLIENT_PORT}
-        REACT_APP_API_PATH: ${API_PATH}
-    depends_on:
-      - be
+        # REACT_APP_API_PATH: ${API_PATH}
+        # depends_on:
+        #   - be
     container_name: fe
     ports:
-      - ${CLIENT_PORT}:8000
+      # port mapping for docker
+      - ${CLIENT_PORT}:${CLIENT_PORT}
     environment:
+      # env variable for node server
       PORT: ${CLIENT_PORT}
-      API_PORT: ${API_PORT}
-      API_PATH: ${API_PATH}
+      # API_PORT: ${API_PORT}
+      # API_PATH: ${API_PATH}

@@ -3,3 +3,4 @@ DeploymentNotes.md
 .postgres-data
 .pgadmin-data
 *.env*
+sheets-test

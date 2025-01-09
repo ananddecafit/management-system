@@ -10,6 +10,7 @@ services:
         # env variables required on client 
         REACT_APP_PORT: ${CLIENT_PORT}
         REACT_APP_GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+        REACT_APP_GOOGLE_API_KEY: ${GOOGLE_API_KEY}
         # REACT_APP_API_PATH: ${API_PATH}
     container_name: fe
     ports:

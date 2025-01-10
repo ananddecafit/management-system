@@ -1,91 +1,93 @@
-import React from 'react';
+import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Script from 'react-load-script';
+
+declare global {
+  interface Window {
+      gapi: any;
+      google: any;
+  }
+}
 
 function App() {
-  let gapi: any;
+  const [gapiInited, setGapiInited] = useState(false);
+  const [gisInited, setGisInited] = useState(false);
+  const [tokenClient, setTokenClient] = useState<any>();
+  const [tokenResponse, setTokenResponse] = useState<any>();
   /**
        * Callback after api.js is loaded.
        */
-  function onGapiLoaded() {
-    console.log(gapi);
+  const onGapiLoaded = () => {
     // gapi.load('client', initializeGapiClient);
-    gapi.load('client', () => {
-      console.log(gapi.client);
-    });
+    window.gapi.load('client', initializeGapiClient);
   }
 
   /**
    * Callback after the API client is loaded. Loads the
    * discovery doc to initialize the API.
    */
-  // async function initializeGapiClient() {
-  //   await gapi.client.init({
-  //     apiKey: API_KEY,
-  //     discoveryDocs: [DISCOVERY_DOC],
-  //   });
-  //   gapiInited = true;
-  //   maybeEnableButtons();
-  // }
+  const initializeGapiClient = async () => {
+    await window.gapi.client.init({
+      apiKey: process.env.REACT_APP_GOOGEL_API_KEY,
+      discoveryDocs: ["https://sheets.googleapis.com/$discovery/rest?version=v4"],
+    });
+    setGapiInited(true);
+  }
 
   // /**
   //  * Callback after Google Identity Services are loaded.
   //  */
-  // function gisLoaded() {
-  //   tokenClient = google.accounts.oauth2.initTokenClient({
-  //     client_id: CLIENT_ID,
-  //     scope: SCOPES,
-  //     callback: '', // defined later
-  //   });
-  //   gisInited = true;
-  //   maybeEnableButtons();
-  // }
-
-  // /**
-  //  * Enables user interaction after all libraries are loaded.
-  //  */
-  // function maybeEnableButtons() {
-  //   if (gapiInited && gisInited) {
-  //     document.getElementById('authorize_button').style.visibility = 'visible';
-  //   }
-  // }
+  const onGisLoaded = () => {
+    setTokenClient(window.google.accounts.oauth2.initTokenClient({
+      client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
+      scope: "https://www.googleapis.com/auth/spreadsheets",
+      callback: '', // defined later
+    }));
+    setGisInited(true);
+  }
 
   // /**
   //  *  Sign in the user upon button click.
   //  */
-  // function handleAuthClick() {
-  //   tokenClient.callback = async (resp) => {
-  //     if (resp.error !== undefined) {
-  //       throw (resp);
-  //     }
-  //     document.getElementById('signout_button').style.visibility = 'visible';
-  //     document.getElementById('authorize_button').innerText = 'Refresh';
-  //     await listMajors();
-  //   };
+  const authorize = () => {
+    tokenClient.callback = async (resp: any) => {
+      if (resp.error !== undefined) {
+        throw (resp);
+      }
+      setTokenResponse(resp);
+      await getData();
+    };
 
-  //   if (gapi.client.getToken() === null) {
-  //     // Prompt the user to select a Google Account and ask for consent to share their data
-  //     // when establishing a new session.
-  //     tokenClient.requestAccessToken({prompt: 'consent'});
-  //   } else {
-  //     // Skip display of account chooser and consent dialog for an existing session.
-  //     tokenClient.requestAccessToken({prompt: ''});
-  //   }
-  // }
+    if (window.gapi.client.getToken() === null) {
+      // Prompt the user to select a Google Account and ask for consent to share their data
+      // when establishing a new session.
+      tokenClient.requestAccessToken({prompt: 'consent'});
+    } else {
+      // Skip display of account chooser and consent dialog for an existing session.
+      tokenClient.requestAccessToken({prompt: ''});
+    }
+  }
+
+  const getData = async () => {
+    const res = await window.gapi.client.sheets.spreadsheets.values.get({
+      spreadsheetId: '15DS3prlfbOpvgGXAKMJq-bZjyxBbqF1y7qrki6mVQB4',
+      range: 'USERS!A:B',
+    });
+    console.log(res);
+  }
 
   // /**
   //  *  Sign out the user upon button click.
   //  */
-  // function handleSignoutClick() {
-  //   const token = gapi.client.getToken();
-  //   if (token !== null) {
-  //     google.accounts.oauth2.revoke(token.access_token);
-  //     gapi.client.setToken('');
-  //     document.getElementById('content').innerText = '';
-  //     document.getElementById('authorize_button').innerText = 'Authorize';
-  //     document.getElementById('signout_button').style.visibility = 'hidden';
-  //   }
-  // }
+  const signOut = () => {
+    const token = window.gapi.client.getToken();
+    if (token !== null) {
+      window.google.accounts.oauth2.revoke(token.access_token);
+      window.gapi.client.setToken('');
+      setTokenResponse(null);
+    }
+  }
 
   // /**
   //  * Print the names and majors of students in a sample spreadsheet:
@@ -117,8 +119,8 @@ function App() {
 
   return (
       <div className="App">
-        <script type="text/javascript" src="https://apis.google.com/js/api.js" onLoad={onGapiLoaded}></script>
-        {/* <script async defer src="https://accounts.google.com/gsi/client" onLoad={onGsiLoaded}></script> */}
+        <Script url="https://apis.google.com/js/api.js" onLoad={onGapiLoaded}></Script>
+        <Script url="https://accounts.google.com/gsi/client" onLoad={onGisLoaded}></Script>
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <p>
@@ -132,6 +134,12 @@ function App() {
           >
             Learn React PORT= {process.env.REACT_APP_PORT}, Google id={process.env.REACT_APP_GOOGLE_CLIENT_ID}
           </a>
+          { gapiInited && gisInited && (
+            <div>
+              <button onClick={authorize}>{ tokenResponse ? "Refresh" : "Authorize" }</button>
+              {tokenResponse && <button onClick={signOut}>Sign out</button>}
+            </div>
+          )}
         </header>
     </div>
   );

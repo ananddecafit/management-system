@@ -2,12 +2,15 @@ version: '3.9'
 
 services:
   fe:
+    # enable when deploying
+    # env_file:
+    #   - .env
     image: ananddecafit/mgmt-system:fe
     build:
       context: ./fe
       dockerfile: dockerfile
       args:
-        # env variables required on client 
+        # env variables required on client
         REACT_APP_PORT: ${CLIENT_PORT}
         REACT_APP_GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
         REACT_APP_GOOGLE_API_KEY: ${GOOGLE_API_KEY}

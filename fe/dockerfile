@@ -21,5 +21,11 @@ ENV REACT_APP_GOOGLE_API_KEY $REACT_APP_GOOGLE_API_KEY
 
 RUN npm run build
 
+FROM node:22.9.0-alpine
+COPY --from=0 /build /build
+COPY --from=0 /node_modules /node_modules
+COPY --from=0 /server.js /server.js
+COPY --from=0 /package.json /package.json
+
 # Starting our application
 CMD [ "npm", "run", "docker-start" ]

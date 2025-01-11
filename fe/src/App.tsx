@@ -15,6 +15,7 @@ function App() {
   const [gisInited, setGisInited] = useState(false);
   const [tokenClient, setTokenClient] = useState<any>();
   const [tokenResponse, setTokenResponse] = useState<any>();
+  const [data, setData] = useState<{id: string, email: string}[]>([]);
   /**
        * Callback after api.js is loaded.
        */
@@ -56,7 +57,6 @@ function App() {
         throw (resp);
       }
       setTokenResponse(resp);
-      await getData();
     };
 
     if (window.gapi.client.getToken() === null) {
@@ -70,11 +70,13 @@ function App() {
   }
 
   const getData = async () => {
-    const res = await window.gapi.client.sheets.spreadsheets.values.get({
+    window.gapi.client.sheets.spreadsheets.values.get({
       spreadsheetId: '15DS3prlfbOpvgGXAKMJq-bZjyxBbqF1y7qrki6mVQB4',
-      range: 'USERS!A:B',
+      range: 'USERS!A2:B',
+    }).then((res: any) => {
+      console.log(res);
+      setData(res.result.values.map((val: string[]) => ({ id: val[0], email: val[1] })));
     });
-    console.log(res);
   }
 
   // /**
@@ -138,6 +140,8 @@ function App() {
             <div>
               <button onClick={authorize}>{ tokenResponse ? "Refresh" : "Authorize" }</button>
               {tokenResponse && <button onClick={signOut}>Sign out</button>}
+              {tokenResponse && <button onClick={getData}>Get data</button>}
+              {[...data?.map((val, idx) => <div key={idx}>{val.email}</div>)]}
             </div>
           )}
         </header>

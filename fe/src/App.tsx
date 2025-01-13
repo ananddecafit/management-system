@@ -17,18 +17,11 @@ function App() {
   const [tokenClient, setTokenClient] = useState<any>();
   const [tokenResponse, setTokenResponse] = useState<any>();
   const [data, setData] = useState<{id: string, email: string}[]>([]);
-  /**
-       * Callback after api.js is loaded.
-       */
+
   const onGapiLoaded = () => {
-    // gapi.load('client', initializeGapiClient);
     window.gapi.load('client', initializeGapiClient);
   }
 
-  /**
-   * Callback after the API client is loaded. Loads the
-   * discovery doc to initialize the API.
-   */
   const initializeGapiClient = async () => {
     await window.gapi.client.init({
       apiKey: process.env.REACT_APP_GOOGEL_API_KEY,
@@ -37,9 +30,6 @@ function App() {
     setGapiInited(true);
   }
 
-  // /**
-  //  * Callback after Google Identity Services are loaded.
-  //  */
   const onGisLoaded = () => {
     setTokenClient(window.google.accounts.oauth2.initTokenClient({
       client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
@@ -49,9 +39,6 @@ function App() {
     setGisInited(true);
   }
 
-  // /**
-  //  *  Sign in the user upon button click.
-  //  */
   const authorize = () => {
     tokenClient.callback = async (resp: any) => {
       if (resp.error !== undefined) {
@@ -76,9 +63,6 @@ function App() {
     });
   }
 
-  // /**
-  //  *  Sign out the user upon button click.
-  //  */
   const signOut = () => {
     const token = window.gapi.client.getToken();
     if (token !== null) {
@@ -87,34 +71,6 @@ function App() {
       setTokenResponse(null);
     }
   }
-
-  // /**
-  //  * Print the names and majors of students in a sample spreadsheet:
-  //  * https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
-  //  */
-  // async function listMajors() {
-  //   let response;
-  //   try {
-  //     // Fetch first 10 files
-  //     response = await gapi.client.sheets.spreadsheets.values.get({
-  //       spreadsheetId: '15DS3prlfbOpvgGXAKMJq-bZjyxBbqF1y7qrki6mVQB4',
-  //       range: 'USERS!A:B',
-  //     });
-  //   } catch (err) {
-  //     document.getElementById('content').innerText = err.message;
-  //     return;
-  //   }
-  //   const range = response.result;
-  //   if (!range || !range.values || range.values.length == 0) {
-  //     document.getElementById('content').innerText = 'No values found.';
-  //     return;
-  //   }
-  //   // Flatten to string to display
-  //   const output = range.values.reduce(
-  //       (str, row) => `${str}${row[0]}, ${row[1]}\n`,
-  //       '');
-  //   document.getElementById('content').innerText = output;
-  // }
 
   return (
       <div className="App">

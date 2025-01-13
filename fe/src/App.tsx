@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Script from 'react-load-script';
+import { getAllUsers } from './api/Users';
 
 declare global {
   interface Window {
@@ -69,13 +70,9 @@ function App() {
     }
   }
 
-  const getData = async () => {
-    window.gapi.client.sheets.spreadsheets.values.get({
-      spreadsheetId: '15DS3prlfbOpvgGXAKMJq-bZjyxBbqF1y7qrki6mVQB4',
-      range: 'USERS!A2:B',
-    }).then((res: any) => {
-      console.log(res);
-      setData(res.result.values.map((val: string[]) => ({ id: val[0], email: val[1] })));
+  const getData = () => {
+    getAllUsers().then((res) => {
+      setData(res);
     });
   }
 

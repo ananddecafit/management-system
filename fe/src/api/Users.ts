@@ -1,5 +1,5 @@
-import { queryRangeFromSheet, getRangeFromSheet } from "./Sheets";
+import { queryRangeFromSheet } from "./Sheets";
 
-export const getAllUsers = () => getRangeFromSheet<{id: string, email: string}[]>("USERS!A2:B", ["id", "email"]);;
+// export const getAllUsers = () => getRangeFromSheet<{id: string, email: string}[]>("USERS!A2:B", ["id", "email"]);;
 
-export const getAllUsersViaCsv = () => queryRangeFromSheet("USERS!A:B", "select *")
+export const getAllUsers = () => queryRangeFromSheet("USERS!A:B", "select *")

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Script from 'react-load-script';
-import { getAllUsersViaCsv } from './api/Users';
+import { getAllUsers } from './api/Users';
 
 declare global {
   interface Window {
@@ -68,7 +68,7 @@ function App() {
     // getAllUsers().then((res) => {
     //    console.log(res)
     // });
-    getAllUsersViaCsv().then((res) => setData(res as any));
+    getAllUsers().then((res) => setData(res as any));
   }
 
   const signOut = () => {

@@ -1,5 +1,4 @@
-import axios from "axios";
-import { arrayToJson, csvToDataFrame, csvToJson } from "../utils/ArrayConversions";
+import { arrayToJson, csvToJson } from "../utils/ArrayConversions";
 
 const SPREADSHEET_ID = "15DS3prlfbOpvgGXAKMJq-bZjyxBbqF1y7qrki6mVQB4";
 const SPREADSHEET_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}`;

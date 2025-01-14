@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Script from 'react-load-script';
-import { getAllUsers } from './api/Users';
+import { getAllUsersViaCsv } from './api/Users';
 
 declare global {
   interface Window {
@@ -16,7 +16,7 @@ function App() {
   const [gisInited, setGisInited] = useState(false);
   const [tokenClient, setTokenClient] = useState<any>();
   const [tokenResponse, setTokenResponse] = useState<any>();
-  const [data, setData] = useState<{id: string, email: string}[]>([]);
+  const [data, setData] = useState<any[]>([]);
 
   const onGapiLoaded = () => {
     window.gapi.load('client', initializeGapiClient);
@@ -39,6 +39,13 @@ function App() {
     setGisInited(true);
   }
 
+  const onChartsApiLoaded = () => {
+    window.google.charts.load('current', {packages: ['corechart']});
+    window.google.charts.setOnLoadCallback(() => {
+      console.log(window.google.visualization.Query);
+    });
+  };
+
   const authorize = () => {
     tokenClient.callback = async (resp: any) => {
       if (resp.error !== undefined) {
@@ -58,9 +65,10 @@ function App() {
   }
 
   const getData = () => {
-    getAllUsers().then((res) => {
-      setData(res);
-    });
+    // getAllUsers().then((res) => {
+    //    console.log(res)
+    // });
+    getAllUsersViaCsv().then((res) => setData(res as any));
   }
 
   const signOut = () => {
@@ -76,6 +84,8 @@ function App() {
       <div className="App">
         <Script url="https://apis.google.com/js/api.js" onLoad={onGapiLoaded}></Script>
         <Script url="https://accounts.google.com/gsi/client" onLoad={onGisLoaded}></Script>
+        {/* https://developers.google.com/chart/interactive/support */}
+        <Script url="https://www.gstatic.com/charts/loader.js" onLoad={onChartsApiLoaded}></Script>
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <p>
@@ -94,7 +104,7 @@ function App() {
               <button onClick={authorize}>{ tokenResponse ? "Refresh" : "Authorize" }</button>
               {tokenResponse && <button onClick={signOut}>Sign out</button>}
               {tokenResponse && <button onClick={getData}>Get data</button>}
-              {[...data?.map((val, idx) => <div key={idx}>{val.email}</div>)]}
+              {[...data?.map((val, idx) => <div key={idx}>{val.Email}</div>)]}
             </div>
           )}
         </header>

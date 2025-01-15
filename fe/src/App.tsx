@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Script from 'react-load-script';
-import { getAllUsers } from './api/Users';
+import { getAllUsers } from './be/api/Users';
+import { insertClient } from './be/api/Clients';
 
 declare global {
   interface Window {
@@ -17,6 +18,7 @@ function App() {
   const [tokenClient, setTokenClient] = useState<any>();
   const [tokenResponse, setTokenResponse] = useState<any>();
   const [data, setData] = useState<any[]>([]);
+  const [name, setName] = useState("");
 
   const onGapiLoaded = () => {
     window.gapi.load('client', initializeGapiClient);
@@ -68,7 +70,7 @@ function App() {
     // getAllUsers().then((res) => {
     //    console.log(res)
     // });
-    getAllUsers().then((res) => setData(res as any));
+    getAllUsers().then((res) => setData(res!));
   }
 
   const signOut = () => {
@@ -102,9 +104,16 @@ function App() {
           { gapiInited && gisInited && (
             <div>
               <button onClick={authorize}>{ tokenResponse ? "Refresh" : "Authorize" }</button>
-              {tokenResponse && <button onClick={signOut}>Sign out</button>}
-              {tokenResponse && <button onClick={getData}>Get data</button>}
-              {[...data?.map((val, idx) => <div key={idx}>{val.Email}</div>)]}
+              {tokenResponse && 
+                <div>
+                  <button onClick={signOut}>Sign out</button>
+                  <button onClick={getData}>Get data</button>
+                  <div>
+                    <input type='text' onChange={(ev)=>setName(ev.target.value)}></input>
+                    <button onClick={() => insertClient(name)}>Insert client</button>
+                  </div>
+                  {[...data?.map((val, idx) => <div key={idx}>{val.Email}</div>)]}
+                </div>}
             </div>
           )}
         </header>

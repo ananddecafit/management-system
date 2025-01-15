@@ -1,7 +1,9 @@
-import { arrayToJson, csvToJson } from "../utils/ArrayConversions";
+import axios from "axios";
+import { arrayToJson, csvToJson } from "../../utils/ArrayConversions";
 
 const SPREADSHEET_ID = "15DS3prlfbOpvgGXAKMJq-bZjyxBbqF1y7qrki6mVQB4";
 const SPREADSHEET_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}`;
+const SHEETS_API_URL = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}`;
 
 interface SheetsApiResponse {
     result: {
@@ -25,7 +27,7 @@ export const getRangeFromSheet = <T>(range: string, columns: string[]): Promise<
     .catch((err: SheetsApiErrorResult) => console.error(err));
   }
 
-export const queryRangeFromSheet = (range: string, queryString: string) => {
+export const queryDataFromRange = <T>(range: string, queryString: string) => {
     // https://developers.google.com/chart/interactive/docs/dev/implementing_data_source#request-format
     // https://developers.google.com/chart/interactive/docs/querylanguage
     const csvPath = `${SPREADSHEET_URL}/gviz/tq?tqx=out:csv&range=${range}&headers=1&tq=${queryString}`;
@@ -33,8 +35,21 @@ export const queryRangeFromSheet = (range: string, queryString: string) => {
         "Authorization": `Bearer ${window.gapi.client.getToken().access_token}`
     };
 
-    return csvToJson(csvPath, requestHeaders);
+    return csvToJson(csvPath, requestHeaders) as Promise<T[] | void>;
 };
+
+export const insertDataToPage = (range: string, data: { values: any[] }) => {
+    const url = `${SHEETS_API_URL}/values/${range}:append?valueInputOption=RAW`;
+    const requestHeaders = {
+        "Authorization": `Bearer ${window.gapi.client.getToken().access_token}`
+    };
+
+    return axios.post(url, data, { headers: requestHeaders });
+}
+
+export const deleteDataFromSheet = () => {};
+
+export const updateDataOnSheet = () => {};
 
 
 // works
